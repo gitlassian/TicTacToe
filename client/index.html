@@ -1,3 +1,48 @@
 <!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><title>TicTacToe</title></head>
-<body><p>Client is coming soon.</p></body></html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Крестики-нолики</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <h1>Крестики-нолики</h1>
+
+    <section id="lobby" class="card">
+      <label class="field">
+        <span>Твоё имя</span>
+        <input id="name" maxlength="20" placeholder="Игрок" autocomplete="nickname">
+      </label>
+      <button id="create" class="primary">Создать комнату</button>
+      <div class="divider"><span>или</span></div>
+      <form id="join-form" class="join">
+        <input id="code" maxlength="4" placeholder="КОД" autocomplete="off" spellcheck="false" aria-label="Код комнаты">
+        <button type="submit">Войти</button>
+      </form>
+    </section>
+
+    <section id="game" class="card" hidden>
+      <div class="room">
+        Комната <strong id="room-code"></strong>
+        <button id="copy" class="link" type="button">скопировать ссылку</button>
+      </div>
+      <div class="players">
+        <div id="player-X" class="player"><span class="mark x">X</span><span class="pname"></span></div>
+        <div id="player-O" class="player"><span class="mark o">O</span><span class="pname"></span></div>
+      </div>
+      <p id="status" class="status" aria-live="polite"></p>
+      <div id="board" class="board" role="grid" aria-label="Игровое поле"></div>
+      <div class="actions">
+        <button id="rematch" class="primary" hidden>Реванш</button>
+        <button id="leave" type="button">Выйти</button>
+      </div>
+    </section>
+
+    <p id="error" class="error" role="alert" hidden></p>
+    <p id="conn" class="conn"></p>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
