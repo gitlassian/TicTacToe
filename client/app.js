@@ -36,18 +36,22 @@
   function connect() {
     const proto = location.protocol === "https:" ? "wss:" : "ws:";
     ws = new WebSocket(`${proto}//${location.host}/ws`);
+    const socket = ws;
     setConn("Подключаемся…");
     ws.addEventListener("open", () => {
+      if (ws !== socket) return;
       setConn("");
-      for (const msg of queue) ws.send(JSON.stringify(msg));
+      for (const msg of queue) socket.send(JSON.stringify(msg));
       queue = [];
     });
     ws.addEventListener("message", (event) => {
+      if (ws !== socket) return;
       let msg;
       try { msg = JSON.parse(event.data); } catch { return; }
       handle(msg);
     });
     ws.addEventListener("close", () => {
+      if (ws !== socket) return; // we closed it ourselves (Leave) or already reconnected
       ws = null;
       queue = [];
       setConn(room ? "Соединение потеряно. Обнови страницу, чтобы начать заново." : "Нет связи с сервером.");
@@ -201,7 +205,10 @@
   });
 
   ui.leave.addEventListener("click", () => {
-    if (ws) ws.close();
+    const socket = ws;
+    ws = null;
+    queue = [];
+    if (socket) socket.close();
     room = you = state = null;
     rematchAsked = false;
     history.replaceState(null, "", location.pathname);
